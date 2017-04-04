@@ -17,8 +17,10 @@ public class Transmit {
 	
 	DataOutputStream out;
 	DataInputStream in;
+	Encrypt encrypt;
 	
 	public Transmit(Socket socket) {
+		encrypt = new Encrypt();
 		try {
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
@@ -28,18 +30,32 @@ public class Transmit {
 	}
 	
 	public void sendMessage(String s){
+		/**
+		 * First convert string to byte array
+		 * then write the byte array to outputstream
+		 */
+		byte[] b = s.getBytes();
+		//b = encrypt.encryptBtyeArray(b, key);
+		
 		try {
-			out.writeUTF(s);
+			out.write(b);
 		} catch (IOException e) {
 		}
 	}
 	
+	
 	public String readMessage(){
+		/**
+		 * First initialize a byte array of 2000;
+		 * Then read the byte array from inputstream
+		 * Construct a byte array from the read in byte array.
+		 */
 		String read;
-		
+		byte[] b = new byte[2000];
 		try {
-			read = in.readUTF();
-			return read;
+			in.read(b);
+			read = new String(b);
+			return read.trim();
 		} catch (IOException e) {}
 
 		return null;

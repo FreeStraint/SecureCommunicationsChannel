@@ -23,18 +23,19 @@ public class ClientHandler implements Runnable {
 	@Override
 	public void run(){
 		// Read from client
-		retrieve = transmit.readMessage();
+		retrieve = transmit.readMessage().trim();
 		if(retrieve == null){
 			System.out.println("Error");
 		}
 		System.out.println("Code is "+ retrieve);
+		server.setKey(retrieve);
 		
-		retrieve = transmit.readMessage();
+		retrieve = transmit.readMessage().trim();
 		String userID = retrieve;
-		
-		retrieve = transmit.readMessage();
+
+		retrieve = transmit.readMessage().trim();
 		String password = retrieve;
-		
+
 		if(!server.checkAuthenticate(userID, password)){
 			transmit.sendMessage(userNotExist);
 			try {
@@ -43,10 +44,11 @@ public class ClientHandler implements Runnable {
 			} catch (IOException e) {}
 		}else{
 			transmit.sendMessage(Success);
-		
+			
 			while(true){
 				retrieve = transmit.readMessage();
 				//If user send "finished" break the loop and close the socket
+				System.out.println("Read message: " + retrieve);
 				if(retrieve.equals(Finish)){
 					break;
 				}
@@ -62,9 +64,7 @@ public class ClientHandler implements Runnable {
 			}
 			try {
 				socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-			}
+			} catch (IOException e) {}
 		}
 	}
 }

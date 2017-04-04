@@ -1,5 +1,6 @@
 
 import java.net.Socket;
+import java.security.Key;
 import java.util.Scanner;
 
 public class ClientConnection {
@@ -29,26 +30,22 @@ public class ClientConnection {
 		System.out.println("Please enter your userID");
 		String userID = scan.nextLine();
 		client.setUserID(userID);
-//		transmit.sendMessage(userID);
 		System.out.println("Please enter your password");
 		String password = scan.nextLine();
 		client.setPassword(password);
-//		transmit.sendMessage(password);
 	}
 	public void run() throws Exception{
 
 		//Send code
-		double key = 12345;
-		//transmit.sendMessage("12345");
-		client.setKey(key);
-		
-		transmit.sendMessage(client.getKey().toString());
+		//transmit.sendMessage(client.getKey().toString());
+		transmit.sendMessage("12345");
 		
 		getUserInfo();
 		transmit.sendMessage(client.getUserID());
 		transmit.sendMessage(client.getPassword());
 		
-		retrieve = transmit.readMessage();
+		retrieve = transmit.readMessage().trim();
+		System.out.println("Message from server: "+ retrieve);
 		if(retrieve.equals(userNotExist)){
 			System.out.println("You are not exist in the system");
 			socket.close();
@@ -63,6 +60,10 @@ public class ClientConnection {
 				break;
 			}
 			retrieve = transmit.readMessage();
+			if(retrieve == null){
+				System.out.println("Please try again");
+				continue;
+			}
 			if(retrieve.equals(fileExist)){
 				System.out.println(fileExist);
 				transmit.readFile(filename);

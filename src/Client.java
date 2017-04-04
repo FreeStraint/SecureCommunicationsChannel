@@ -6,6 +6,7 @@ public class Client {
 	private Double key;
 	
 	public Client(){
+		//this.generateKey();
 	}
 
 	public String getUserID() {
@@ -31,4 +32,16 @@ public class Client {
 	public void setKey(Double key) {
 		this.key = key;
 	}
+	
+//	public Key generateKey(){
+//		try {
+//			KeyGenerator generator = KeyGenerator.getInstance("AES");
+//			Key key = generator.generateKey();
+//			this.setKey(key);
+//			return key;
+//		} catch (NoSuchAlgorithmException e) {
+//			//e.printStackTrace();
+//		}
+//		return null;
+//	}
 }
