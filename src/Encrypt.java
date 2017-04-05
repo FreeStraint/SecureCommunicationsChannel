@@ -20,35 +20,35 @@ public class Encrypt {
 		return b;
 	}
 	
-	public byte[] encryptMessage(byte[] value, long[] key){
-		byte[] b = encrypt(value, key);
+	public long[] encryptMessage(long[] value, long[] key){
+		long[] b = encrypt(value, key);
 		System.out.println("value: "+ value);
 		System.out.println("b: "+ b);
 		return null;
 	}
 
-	public byte[] decryptMessage(byte[] value, long[] key){
-		byte[] b = decrypt(value, key);
+	public long[] decryptMessage(long[] value, long[] key){
+		long[] b = decrypt(value, key);
 		System.out.println("value: "+ value);
 		System.out.println("b: "+ b);
 		return null;
 	}
 	
-	private native byte[] encrypt(byte[] value, long[] key);
-	private native byte[] decrypt(byte[] value, long[] key);
+	private native long[] encrypt(long[] value, long[] key);
+	private native long[] decrypt(long[] value, long[] key);
 	
 	public static void main(String[] args) {
 		Encrypt e = new Encrypt();
 		long[] key = new long[4];
+		long[] value = new long[]{100,200,300,400};
+		//String s = "ABC";
+		//byte[] b = s.getBytes();
+		System.out.println(value);
 		
-		String s = "ABC";
-		byte[] b = s.getBytes();
-		System.out.println(b);
+		long[] l = e.encryptMessage(value, key);
+		System.out.println("encrypt: "+ l);
 		
-		b = e.encryptMessage(b, key);
-		System.out.println("encrypt: "+ b);
-		
-		b = e.decryptMessage(b, key);
-		System.out.println("decrypt: "+ b);
+		l = e.decryptMessage(value, key);
+		System.out.println("decrypt: "+ l);
 	}
 }

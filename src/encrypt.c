@@ -37,59 +37,34 @@ unsigned long delta=0x9e3779b9l;
 }
 
 JNIEXPORT jbyteArray JNICALL Java_Encrypt_encrypt
-  (JNIEnv *env, jobject thisObj, jbyteArray value, jlongArray key){
+  (JNIEnv *env, jobject thisObj, jlongArray value, jlongArray key){
 
   	printf("encrypt\n");
-  	jbyte *v = (*env)->GetByteArrayElements(env, value, 0);
+  	jlong *v = (*env)->GetLongArrayElements(env, value, 0);
   	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
-    jboolean is_copy_value;
-    jboolean is_copy_key;
+
   	jsize vSize = (*env)->GetArrayLength(env, value);
 
-    long *a = (long *) v;
-    //long *b = (long *) k;
-	while((jbyte *) a < v + vSize){
-		encrypt(a, (long *) k);
-		a += 2;
-	}
-
-	jbyteArray res = (*env)->NewByteArray(env, vSize);
-	(*env)->SetByteArrayRegion(env, res, 0, vSize, v);
-	//return res;
-	(*env)->ReleaseByteArrayElements(env, value, v, is_copy_value);
-	(*env)->ReleaseLongArrayElements(env, key, k, is_copy_key);
+  	encrypt((long *) v, (long *) k);
+	jlongArray res = (*env)->NewLongArray(env, vSize);
+	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
 	return res;
   }
 
 
 JNIEXPORT jbyteArray JNICALL Java_Encrypt_decrypt
-(JNIEnv *env, jobject thisObj, jbyteArray value, jlongArray key){
+(JNIEnv *env, jobject thisObj, jlongArray value, jlongArray key){
 
-    jboolean is_copy_key;
-    jboolean is_copy_value;
-  	jbyte *v = (*env)->GetByteArrayElements(env, value, 0);
+  	jlong *v = (*env)->GetLongArrayElements(env, value, 0);
   	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
-
-    long *a = (long *) v;
-    //long *b = (long *) k;
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
 	
-    while((jbyte *) a < v + vSize){
-		decrypt(a, (long *) k);
-		a += 2;
-	}
-    //  	int i = 0;
-    //  	for(i = 0; i<vSize; i+=2){
-    //  		decrypt(a, b);
-    //  	}
-	
-	jbyteArray res = (*env)->NewByteArray(env, vSize);
-	(*env)->SetByteArrayRegion(env, res, 0, vSize, v);
+	decrypt((long *) v, (long *) k);
+
+	jlongArray res = (*env)->NewLongArray(env, vSize);
+	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
 	printf("Decrypt\n");	
-	
-   	(*env)->ReleaseByteArrayElements(env, value, v, is_copy_value);
-   	(*env)->ReleaseLongArrayElements(env, key, k, is_copy_key);
   	return res;
     
 }
