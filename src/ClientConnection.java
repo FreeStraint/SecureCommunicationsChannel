@@ -1,6 +1,5 @@
 
 import java.net.Socket;
-import java.security.Key;
 import java.util.Scanner;
 
 public class ClientConnection {
@@ -16,14 +15,12 @@ public class ClientConnection {
 	Client client;
 	Scanner scan;
 	Socket socket;
-	Transmit transmit;
 	private String retrieve;
 	
 	public ClientConnection() throws Exception{
 		scan = new Scanner(System.in);
 		socket = new Socket(address, portNumber);
-		transmit = new Transmit(socket);
-		client = new Client();
+		client = new Client(socket);
 	}
 	
 	public void getUserInfo(){
@@ -37,14 +34,13 @@ public class ClientConnection {
 	public void run() throws Exception{
 
 		//Send code
-		//transmit.sendMessage(client.getKey().toString());
-		transmit.sendMessage("12345");
+		client.sendMessage("12345");
 		
 		getUserInfo();
-		transmit.sendMessage(client.getUserID());
-		transmit.sendMessage(client.getPassword());
+		client.sendMessage(client.getUserID());
+		client.sendMessage(client.getPassword());
 		
-		retrieve = transmit.readMessage().trim();
+		retrieve = client.readMessage().trim();
 		System.out.println("Message from server: "+ retrieve);
 		if(retrieve.equals(userNotExist)){
 			System.out.println("You are not exist in the system");
@@ -55,18 +51,18 @@ public class ClientConnection {
 		while(true){
 			System.out.println("Please enter a filename, enter 'finished' to exit");
 			String filename = scan.nextLine();
-			transmit.sendMessage(filename);
+			client.sendMessage(filename);
 			if(filename.equals(Finish)){
 				break;
 			}
-			retrieve = transmit.readMessage();
+			retrieve = client.readMessage();
 			if(retrieve == null){
 				System.out.println("Please try again");
 				continue;
 			}
 			if(retrieve.equals(fileExist)){
 				System.out.println(fileExist);
-				transmit.readFile(filename);
+				client.readFile(filename);
 				System.out.println("Done");
 			}
 			else{

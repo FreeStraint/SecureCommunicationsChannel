@@ -9,44 +9,43 @@ public class ClientHandler implements Runnable {
 	final String fileNotExist = "File not exist";
 	final String fileExist = "FileExist";
 
-	
 	private Socket socket;
 	private Server server;
-	Transmit transmit;
+	//Transmit transmit;
 	String retrieve;
 	
-	public ClientHandler(Socket socket, Server server){
+	public ClientHandler(Socket socket){
 		this.socket = socket;
-		this.server = server;
-		transmit = new Transmit(socket);
+		this.server = new Server(socket);
+		//transmit = new Transmit(socket);
 	}
 	@Override
 	public void run(){
 		// Read from client
-		retrieve = transmit.readMessage().trim();
+		retrieve = server.readMessage();
 		if(retrieve == null){
 			System.out.println("Error");
 		}
 		System.out.println("Code is "+ retrieve);
-		server.setKey(retrieve);
+		//server.setKey(retrieve);
 		
-		retrieve = transmit.readMessage().trim();
+		retrieve = server.readMessage().trim();
 		String userID = retrieve;
 
-		retrieve = transmit.readMessage().trim();
+		retrieve = server.readMessage().trim();
 		String password = retrieve;
 
 		if(!server.checkAuthenticate(userID, password)){
-			transmit.sendMessage(userNotExist);
+			server.sendMessage(userNotExist);
 			try {
 				socket.close();
 				Thread.currentThread().interrupt();
 			} catch (IOException e) {}
 		}else{
-			transmit.sendMessage(Success);
+			server.sendMessage(Success);
 			
 			while(true){
-				retrieve = transmit.readMessage();
+				retrieve = server.readMessage();
 				//If user send "finished" break the loop and close the socket
 				System.out.println("Read message: " + retrieve);
 				if(retrieve.equals(Finish)){
@@ -54,12 +53,12 @@ public class ClientHandler implements Runnable {
 				}
 				//If file exist, send confirm message and send file
 				if(server.checkFile(retrieve)){
-					transmit.sendMessage(fileExist);
-					transmit.sendFile(retrieve);
+					server.sendMessage(fileExist);
+					server.sendFile(retrieve);
 				}
 				//If file do not exist, send file not found message
 				else{
-					transmit.sendMessage(fileNotExist);
+					server.sendMessage(fileNotExist);
 				}
 			}
 			try {

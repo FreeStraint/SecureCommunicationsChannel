@@ -6,12 +6,12 @@ import java.util.concurrent.Executors;
 
 public class ServerConnection {
 	
+	private int poolSize = 20;
 	private int portNumber = 16000;
 	private ServerSocket serverSocket;
 	private ExecutorService pool;
-	private Server server;
 
-	public ServerConnection(int poolSize) throws IOException{
+	public ServerConnection() throws IOException{
 		serverSocket = new ServerSocket(portNumber);
 		pool = Executors.newFixedThreadPool(poolSize);
 	}
@@ -22,8 +22,7 @@ public class ServerConnection {
 			while(true){
 				Socket socket = serverSocket.accept();
 				System.out.println("Socket accepted");
-				server = new Server(socket);
-				pool.execute(new ClientHandler(socket, server));
+				pool.execute(new ClientHandler(socket));
 			}
 		}catch (IOException ex){
 			pool.shutdown();
@@ -31,7 +30,7 @@ public class ServerConnection {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		ServerConnection serverConnection = new ServerConnection(10);
+		ServerConnection serverConnection = new ServerConnection();
 		serverConnection.run();
 	}
 }

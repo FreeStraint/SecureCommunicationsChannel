@@ -1,12 +1,15 @@
+import java.net.Socket;
 
 public class Client {
 	
 	private String userID;
 	private String password;
 	private Double key;
+	private Transmit transmit;
 	
-	public Client(){
+	public Client(Socket socket){
 		//this.generateKey();
+		transmit = new Transmit(socket);
 	}
 
 	public String getUserID() {
@@ -31,6 +34,18 @@ public class Client {
 
 	public void setKey(Double key) {
 		this.key = key;
+	}
+	
+	public void sendMessage(String s){
+		transmit.sendMessage(s);
+	}
+	
+	public String readMessage(){
+		return transmit.readMessage().trim();
+	}
+	
+	public void readFile(String fname){
+		transmit.readFile(fname);
 	}
 	
 //	public Key generateKey(){

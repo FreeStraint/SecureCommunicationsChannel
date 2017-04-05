@@ -2,11 +2,13 @@ import java.net.Socket;
 
 public class Server {
 	
-	private double key;
 	private Socket socket;
-	ServerCheck check;
+	private ServerCheck check;
+	private Transmit transmit;
+
 	
 	public Server(Socket socket){
+		transmit = new Transmit(socket);
 		this.socket = socket;
 		check = new ServerCheck();
 	}
@@ -21,13 +23,16 @@ public class Server {
 	public boolean checkFile(String fname){
 		return check.checkFile(fname);
 	}
-
-	public Double getKey() {
-		return key;
+	
+	public void sendMessage(String s){
+		transmit.sendMessage(s);
 	}
-
-	public void setKey(String k) {
-		this.key = Double.parseDouble(k);
-		//this.key = key;
+	
+	public String readMessage(){
+		return transmit.readMessage().trim();
+	}
+	
+	public void sendFile(String fname){
+		transmit.sendFile(fname);
 	}
 }

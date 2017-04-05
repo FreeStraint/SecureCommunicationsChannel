@@ -35,7 +35,7 @@ public class Transmit {
 		 * then write the byte array to outputstream
 		 */
 		byte[] b = s.getBytes();
-		//b = encrypt.encryptBtyeArray(b, key);
+		b = encrypt.encryptBtyeArray(b);
 		
 		try {
 			out.write(b);
@@ -54,6 +54,7 @@ public class Transmit {
 		byte[] b = new byte[2000];
 		try {
 			in.read(b);
+			b = encrypt.decryptByteArray(b);
 			read = new String(b);
 			return read.trim();
 		} catch (IOException e) {}
@@ -69,7 +70,8 @@ public class Transmit {
 			FileInputStream fis = new FileInputStream(file);
 			fis.read(b);
 			fis.close();
-			out.write(b);
+			byte[] en = encrypt.encryptBtyeArray(b);
+			out.write(en);
 		}catch (Exception e){}
 	}
 	
@@ -78,9 +80,9 @@ public class Transmit {
 		byte[] b = new byte[6022386];
 		try {
 			in.read(b);
-			
+			byte[] de = encrypt.decryptByteArray(b);
 			FileOutputStream fos = new FileOutputStream(file);
-			fos.write(b);
+			fos.write(de);
 			fos.close();
 		} catch (IOException e) {}
 	}
