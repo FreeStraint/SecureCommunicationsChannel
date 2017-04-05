@@ -1,7 +1,9 @@
+import java.nio.ByteBuffer;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 public class Encrypt {
 		
@@ -22,14 +24,14 @@ public class Encrypt {
 		byte[] b = encrypt(value, key);
 		System.out.println("value: "+ value);
 		System.out.println("b: "+ b);
-		return b;
+		return null;
 	}
-	
+
 	public byte[] decryptMessage(byte[] value, long[] key){
 		byte[] b = decrypt(value, key);
 		System.out.println("value: "+ value);
 		System.out.println("b: "+ b);
-		return b;
+		return null;
 	}
 	
 	private native byte[] encrypt(byte[] value, long[] key);
@@ -37,23 +39,16 @@ public class Encrypt {
 	
 	public static void main(String[] args) {
 		Encrypt e = new Encrypt();
-		Key k;
-		try {
-			k = KeyGenerator.getInstance("AES").generateKey();
-			long[] key = new long[]{1,2,3,4,5};
-			byte[] value = "ABCDE".getBytes();
-			
-			System.out.println("Original: " + value);
-			value = e.encryptMessage(value, key);
-			String s = new String(value);
-			
-			System.out.println("Encrypt: "+ value);
-			value = e.decryptMessage(value, key);
-			System.out.println("Decrypt:" + value);
-			s = new String(value);
-			System.out.println("Decrypt Message: "+ s);
-			
-		} catch (NoSuchAlgorithmException e1) {
-		}		
+		long[] key = new long[4];
+		
+		String s = "ABC";
+		byte[] b = s.getBytes();
+		System.out.println(b);
+		
+		b = e.encryptMessage(b, key);
+		System.out.println("encrypt: "+ b);
+		
+		b = e.decryptMessage(b, key);
+		System.out.println("decrypt: "+ b);
 	}
 }

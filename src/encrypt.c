@@ -52,21 +52,18 @@ JNIEXPORT jbyteArray JNICALL Java_Encrypt_encrypt
 		encrypt(a, (long *) k);
 		a += 2;
 	}
-//  	int i = 0;
-//  	for(i = 0; i<vSize; i+=2){
-//  		encrypt(a, b);
-//  	}
+
 	jbyteArray res = (*env)->NewByteArray(env, vSize);
 	(*env)->SetByteArrayRegion(env, res, 0, vSize, v);
 	//return res;
-    	(*env)->ReleaseByteArrayElements(env, value, v, is_copy_value);
-    	(*env)->ReleaseLongArrayElements(env, key, k, is_copy_key);
+	(*env)->ReleaseByteArrayElements(env, value, v, is_copy_value);
+	(*env)->ReleaseLongArrayElements(env, key, k, is_copy_key);
 	return res;
   }
 
 
 JNIEXPORT jbyteArray JNICALL Java_Encrypt_decrypt
-  (JNIEnv *env, jobject thisObj, jbyteArray value, jlongArray key){
+(JNIEnv *env, jobject thisObj, jbyteArray value, jlongArray key){
 
     jboolean is_copy_key;
     jboolean is_copy_value;
@@ -77,24 +74,42 @@ JNIEXPORT jbyteArray JNICALL Java_Encrypt_decrypt
     //long *b = (long *) k;
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
-	while((jbyte *) a < v + vSize){
+	
+    while((jbyte *) a < v + vSize){
 		decrypt(a, (long *) k);
 		a += 2;
 	}
-//  	int i = 0;
-//  	for(i = 0; i<vSize; i+=2){
-//  		decrypt(a, b);
-//  	}
+    //  	int i = 0;
+    //  	for(i = 0; i<vSize; i+=2){
+    //  		decrypt(a, b);
+    //  	}
 	
 	jbyteArray res = (*env)->NewByteArray(env, vSize);
 	(*env)->SetByteArrayRegion(env, res, 0, vSize, v);
 	printf("Decrypt\n");	
-	//return res;
+	
    	(*env)->ReleaseByteArrayElements(env, value, v, is_copy_value);
    	(*env)->ReleaseLongArrayElements(env, key, k, is_copy_key);
   	return res;
-    printf("decrypt\n");
-  }
+    
+}
 
+int main(int argc, char const *argv[])
+{
+	long key[4];
+	long v[] = {0xFFFFFFFF, 0xFFFFFFFF};
+	printf("Original values\n");
+	printf("[%lX %lX]\n", v[0], v[1]);
+
+	encrypt(v, key);
+	printf("[%lX %lX]\n", v[0], v[1]);
+
+	decrypt(v,key);
+	printf("[%lX %lX]\n", v[0], v[1]);
+
+    printf("Do it tomorrow\n");
+    /* code */
+    return 0;
+}
 
 
