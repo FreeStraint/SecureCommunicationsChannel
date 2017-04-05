@@ -7,15 +7,15 @@ JNIEXPORT void JNICALL Java_Encrypt_encrypt
   (JNIEnv *env, jobject thisObj, jbyteArray value, jbyteArray key){
 
   	printf("encrypt\n");
-  	// jbyte *v = (*env)->GetByteArrayElements(env, value, 0);
-  	// jdouble *k = (*env)->GetDoubleArrayElements(env, key, 0);
+  	jbyte *v = (*env)->GetByteArrayElements(env, value, 0);
+  	jbyte *k = (*env)->GetDoubleArrayElements(env, key, 0);
 
-  	// jsize vSize = (*env)->GetArrayLength(env, value);
-
-  	// int i = 0;
-  	// for(i = 0; i<vSize; i+=2){
-  	// 	encrypt(v, k);
-  	// }
+  	jsize vSize = (*env)->GetArrayLength(env, value);
+  	
+  	int i = 0;
+  	for(i = 0; i<vSize; i+=2){
+  		encrypt(v, k);
+  	}
   }
 
 
