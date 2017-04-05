@@ -1,7 +1,5 @@
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 import javax.crypto.KeyGenerator;
 
@@ -22,12 +20,15 @@ public class Encrypt {
 	
 	public byte[] encryptMessage(byte[] value, long[] key){
 		byte[] b = encrypt(value, key);
-		//return null;
+		System.out.println("value: "+ value);
+		System.out.println("b: "+ b);
 		return b;
 	}
 	
 	public byte[] decryptMessage(byte[] value, long[] key){
 		byte[] b = decrypt(value, key);
+		System.out.println("value: "+ value);
+		System.out.println("b: "+ b);
 		return b;
 	}
 	
@@ -39,7 +40,6 @@ public class Encrypt {
 		Key k;
 		try {
 			k = KeyGenerator.getInstance("AES").generateKey();
-			//byte[] key = k.getEncoded();
 			long[] key = new long[]{1,2,3,4,5};
 			byte[] value = "ABCDE".getBytes();
 			
@@ -54,11 +54,6 @@ public class Encrypt {
 			System.out.println("Decrypt Message: "+ s);
 			
 		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
-			//e1.printStackTrace();
-		}
-		//Encrypt e = new Encrypt();
-		
-		//System.out.println(new Random().longs(4).mapToObj(Long::toString).collect(Collectors.joining(",")));
+		}		
 	}
 }
