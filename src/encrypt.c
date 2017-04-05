@@ -45,11 +45,11 @@ JNIEXPORT void JNICALL Java_Encrypt_encrypt
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
 
-  	long* value = (long*) v
-  	long* key = (long*) k
+  	long* ve = (long*) v
+  	long* ke = (long*) k
   	int i = 0;
   	for(i = 0; i<vSize; i+=2){
-  		encrypt(value, key);
+  		encrypt(ve, ke);
   	}
   }
 
