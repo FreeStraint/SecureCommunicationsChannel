@@ -41,13 +41,15 @@ JNIEXPORT void JNICALL Java_Encrypt_encrypt
 
   	printf("encrypt\n");
   	jbyte *v = (*env)->GetByteArrayElements(env, value, 0);
-  	jbyte *k = (*env)->GetDoubleArrayElements(env, key, 0);
+  	jbyte *k = (*env)->GetByteArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
 
+  	long* value = (long*) v
+  	long* key = (long*) k
   	int i = 0;
   	for(i = 0; i<vSize; i+=2){
-  		encrypt(v, k);
+  		encrypt(value, key);
   	}
   }
 
