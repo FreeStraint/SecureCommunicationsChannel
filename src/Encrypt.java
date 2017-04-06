@@ -28,6 +28,7 @@ public class Encrypt {
 	private native long[] encrypt(long[] value, long[] key);
 	private native long[] decrypt(long[] value, long[] key);
 	
+	//Reference from http://stackoverflow.com/questions/4485128/how-do-i-convert-long-to-byte-and-back-in-java
 	public long[] convertBytesToLongs(byte[] b){
 		int size;
 		if(b.length%4 == 0){
@@ -46,14 +47,14 @@ public class Encrypt {
 		}
 		return result;
 	}
-	
+	//Reference from http://stackoverflow.com/questions/11665147/convert-a-longbuffer-intbuffer-shortbuffer-to-bytebuffer
 	public byte[] convertLongsToBytes(long[] l){
 		int size = l.length * 8;
 		ByteBuffer buffer = ByteBuffer.allocate(size);
-		LongBuffer lbuffer = buffer.asLongBuffer();
-		lbuffer.put(l);
+		buffer.asLongBuffer().put(l);
 		
 		byte[] bytes = buffer.array();
+		//Had to remove trailing zeros, otherwise, the converted string won't match
 		for(int i = 0; i<bytes.length; i++){
 			if(bytes[i] == 0){
 				byte[] res = Arrays.copyOfRange(bytes, 0, i);
@@ -65,7 +66,7 @@ public class Encrypt {
 
 	public static void main(String[] args) {
 		Encrypt e = new Encrypt();
-
+		
 		String s = "ABCDEDdaffasfdsaadfadsfadsfadsfadsdfdsafadsfasdfadsf";
 		byte[] bb = s.getBytes();
 

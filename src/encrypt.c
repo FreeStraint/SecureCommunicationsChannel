@@ -43,10 +43,7 @@ JNIEXPORT jlongArray JNICALL Java_Encrypt_encrypt
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
 	
-	//printf("%lX lX\n", v[0], v[1]);
-
   	encrypt((long *) v, (long *) k);
-  	//printf("%lX lX\n", v[0], v[1]);
 
 	jlongArray res = (*env)->NewLongArray(env, vSize);
 	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
@@ -61,7 +58,7 @@ JNIEXPORT jlongArray JNICALL Java_Encrypt_decrypt
   	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
-	long* a = (long *) v;
+
 	decrypt((long *) v, (long *) k);
 
 	jlongArray res = (*env)->NewLongArray(env, vSize);
