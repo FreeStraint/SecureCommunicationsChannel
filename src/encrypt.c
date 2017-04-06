@@ -19,8 +19,6 @@ unsigned long delta = 0x9e3779b9, n=32;
 	v[1] = z;
 }
 
-
-
 void decrypt (long *v, long *k){
 /* TEA decryption routine */
 unsigned long n=32, sum, y=v[0], z=v[1];
@@ -36,7 +34,7 @@ unsigned long delta=0x9e3779b9l;
 	v[1] = z;
 }
 
-JNIEXPORT jbyteArray JNICALL Java_Encrypt_encrypt
+JNIEXPORT jlongArray JNICALL Java_Encrypt_encrypt
   (JNIEnv *env, jobject thisObj, jlongArray value, jlongArray key){
 
   	printf("encrypt\n");
@@ -44,47 +42,32 @@ JNIEXPORT jbyteArray JNICALL Java_Encrypt_encrypt
   	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
+	
+	//printf("%lX lX\n", v[0], v[1]);
 
   	encrypt((long *) v, (long *) k);
+  	//printf("%lX lX\n", v[0], v[1]);
+
 	jlongArray res = (*env)->NewLongArray(env, vSize);
 	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
 	return res;
   }
 
 
-JNIEXPORT jbyteArray JNICALL Java_Encrypt_decrypt
+JNIEXPORT jlongArray JNICALL Java_Encrypt_decrypt
 (JNIEnv *env, jobject thisObj, jlongArray value, jlongArray key){
 
   	jlong *v = (*env)->GetLongArrayElements(env, value, 0);
   	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
-	
+	long* a = (long *) v;
 	decrypt((long *) v, (long *) k);
 
 	jlongArray res = (*env)->NewLongArray(env, vSize);
 	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
-	printf("Decrypt\n");	
-  	return res;
-    
+	return res;
 }
 
-int main(int argc, char const *argv[])
-{
-	long key[4];
-	long v[] = {0xFFFFFFFF, 0xFFFFFFFF};
-	printf("Original values\n");
-	printf("[%lX %lX]\n", v[0], v[1]);
-
-	encrypt(v, key);
-	printf("[%lX %lX]\n", v[0], v[1]);
-
-	decrypt(v,key);
-	printf("[%lX %lX]\n", v[0], v[1]);
-
-    printf("Do it tomorrow\n");
-    /* code */
-    return 0;
-}
 
 

@@ -10,18 +10,18 @@ extern "C" {
 /*
  * Class:     Encrypt
  * Method:    encrypt
- * Signature: ([B[J)[B
+ * Signature: ([J[J)[J
  */
-JNIEXPORT jbyteArray JNICALL Java_Encrypt_encrypt
-  (JNIEnv *, jobject, jbyteArray, jlongArray);
+JNIEXPORT jlongArray JNICALL Java_Encrypt_encrypt
+  (JNIEnv *, jobject, jlongArray, jlongArray);
 
 /*
  * Class:     Encrypt
  * Method:    decrypt
- * Signature: ([B[J)[B
+ * Signature: ([J[J)[J
  */
-JNIEXPORT jbyteArray JNICALL Java_Encrypt_decrypt
-  (JNIEnv *, jobject, jbyteArray, jlongArray);
+JNIEXPORT jlongArray JNICALL Java_Encrypt_decrypt
+  (JNIEnv *, jobject, jlongArray, jlongArray);
 
 #ifdef __cplusplus
 }

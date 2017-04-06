@@ -1,10 +1,10 @@
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -14,16 +14,17 @@ import java.net.Socket;
  */
 public class Transmit {
 	
-	
-	DataOutputStream out;
-	DataInputStream in;
+	ObjectOutputStream out;
+	ObjectInputStream in;
+	//DataOutputStream out;
+	//DataInputStream in;
 	Encrypt encrypt;
 	
 	public Transmit(Socket socket) {
 		encrypt = new Encrypt();
 		try {
-			out = new DataOutputStream(socket.getOutputStream());
-			in = new DataInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
