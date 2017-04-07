@@ -40,21 +40,4 @@ public class ServerCheck {
 		}
 		return false;
 	}
-	
-	
-	
-	public static void main(String[] args) {
-		ServerCheck server = new ServerCheck();
-		boolean data = server.readShadowFile("tom", "54321");
-		System.out.println(data);
-		
-		data = server.readShadowFile("jim", "12345");
-		System.out.println(data);
-		
-		data = server.checkFile("secret.txt");
-		System.out.println(data);
-		
-		data = server.checkFile("secr3.txt");
-		System.out.println(data);
-	}
 }

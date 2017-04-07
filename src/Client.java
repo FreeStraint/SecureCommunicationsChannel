@@ -1,15 +1,20 @@
 import java.net.Socket;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.KeyGenerator;
 
 public class Client {
 	
 	private String userID;
 	private String password;
-	private Double key;
+	private byte[] key;
 	private Transmit transmit;
 	
 	public Client(Socket socket){
-		//this.generateKey();
 		transmit = new Transmit(socket);
+		key = generateKey();
+		transmit.setKey(key);
 	}
 
 	public String getUserID() {
@@ -28,35 +33,35 @@ public class Client {
 		this.password = password;
 	}
 
-	public Double getKey() {
+	public byte[] getKey() {
 		return key;
 	}
-
-	public void setKey(Double key) {
-		this.key = key;
-	}
 	
-	public void sendMessage(String s){
-		transmit.sendMessage(s);
+	public void sendKey(){
+		transmit.sendKey(this.key);
 	}
-	
-	public String readMessage(){
-		return transmit.readMessage().trim();
-	}
-	
+		
 	public void readFile(String fname){
 		transmit.readFile(fname);
 	}
 	
-//	public Key generateKey(){
-//		try {
-//			KeyGenerator generator = KeyGenerator.getInstance("AES");
-//			Key key = generator.generateKey();
-//			this.setKey(key);
-//			return key;
-//		} catch (NoSuchAlgorithmException e) {
-//			//e.printStackTrace();
-//		}
-//		return null;
-//	}
+	public void sendEncryptMesage(String s){
+		transmit.sendEncryptMessage(s);
+	}
+	
+	public String readEncryptMesage(){
+		return transmit.readEncryptMessage().trim();
+	}
+	
+	public byte[] generateKey(){
+		try {
+			KeyGenerator generator = KeyGenerator.getInstance("AES");
+			Key key = generator.generateKey();
+			return key.getEncoded();
+
+		} catch (NoSuchAlgorithmException e) {
+			//e.printStackTrace();
+		}
+		return null;
+	}
 }

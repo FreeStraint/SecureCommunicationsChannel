@@ -1,11 +1,12 @@
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
+
 
 /**
  * This class was used to transmit string message and file between client and server
@@ -14,23 +15,24 @@ import java.net.Socket;
  */
 public class Transmit {
 	
-	ObjectOutputStream out;
-	ObjectInputStream in;
-	//DataOutputStream out;
-	//DataInputStream in;
+	DataOutputStream out;
+	DataInputStream in;
 	Encrypt encrypt;
 	
 	public Transmit(Socket socket) {
 		encrypt = new Encrypt();
 		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-			in = new ObjectInputStream(socket.getInputStream());
+			out = new DataOutputStream(socket.getOutputStream());
+			in = new DataInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void sendMessage(String s){
+	public void setKey(byte[] b){
+		encrypt.setKey(b);
+	}
+	public void sendEncryptMessage(String s){
 		/**
 		 * First convert string to byte array
 		 * then write the byte array to outputstream
@@ -44,15 +46,21 @@ public class Transmit {
 		}
 	}
 	
+	public void sendKey(byte[] b){
+		try {
+			out.write(b);
+		} catch (IOException e) {
+		}
+	}
 	
-	public String readMessage(){
+	public String readEncryptMessage(){
 		/**
-		 * First initialize a byte array of 2000;
+		 * First initialize a byte array of 20000;
 		 * Then read the byte array from inputstream
 		 * Construct a byte array from the read in byte array.
 		 */
 		String read;
-		byte[] b = new byte[2000];
+		byte[] b = new byte[20000];
 		try {
 			in.read(b);
 			b = encrypt.decryptByteArray(b);
@@ -63,6 +71,18 @@ public class Transmit {
 		return null;
 	}
 	
+	public byte[] readKey(){
+
+		byte[] b = new byte[20000];
+		try {
+			in.read(b);
+			return b;
+		} catch (IOException e) {}
+
+		return null;
+	}
+	
+
 	public void sendFile(String filename){
 		File file = new File(filename);
 		byte[] b = new byte[(int) file.length()];
@@ -87,4 +107,6 @@ public class Transmit {
 			fos.close();
 		} catch (IOException e) {}
 	}
+
+
 }

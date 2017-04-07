@@ -11,7 +11,6 @@ public class ClientHandler implements Runnable {
 
 	private Socket socket;
 	private Server server;
-	//Transmit transmit;
 	String retrieve;
 	
 	public ClientHandler(Socket socket){
@@ -22,30 +21,30 @@ public class ClientHandler implements Runnable {
 	@Override
 	public void run(){
 		// Read from client
-		retrieve = server.readMessage();
-		if(retrieve == null){
-			System.out.println("Error");
-		}
-		System.out.println("Code is "+ retrieve);
+		server.readPlainMessage();
+		//if(retrieve == null){
+		//	System.out.println("Error");
+		//}
+		//System.out.println("Code is "+ retrieve);
 		//server.setKey(retrieve);
 		
-		retrieve = server.readMessage().trim();
+		retrieve = server.readEncryptMesage().trim();
 		String userID = retrieve;
 
-		retrieve = server.readMessage().trim();
+		retrieve = server.readEncryptMesage().trim();
 		String password = retrieve;
 
 		if(!server.checkAuthenticate(userID, password)){
-			server.sendMessage(userNotExist);
+			server.sendEncryptMesage(userNotExist);
 			try {
 				socket.close();
 				Thread.currentThread().interrupt();
 			} catch (IOException e) {}
 		}else{
-			server.sendMessage(Success);
+			server.sendEncryptMesage(Success);
 			
 			while(true){
-				retrieve = server.readMessage();
+				retrieve = server.readEncryptMesage();
 				//If user send "finished" break the loop and close the socket
 				System.out.println("Read message: " + retrieve);
 				if(retrieve.equals(Finish)){
@@ -53,12 +52,12 @@ public class ClientHandler implements Runnable {
 				}
 				//If file exist, send confirm message and send file
 				if(server.checkFile(retrieve)){
-					server.sendMessage(fileExist);
+					server.sendEncryptMesage(fileExist);
 					server.sendFile(retrieve);
 				}
 				//If file do not exist, send file not found message
 				else{
-					server.sendMessage(fileNotExist);
+					server.sendEncryptMesage(fileNotExist);
 				}
 			}
 			try {

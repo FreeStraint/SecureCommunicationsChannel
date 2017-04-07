@@ -34,13 +34,13 @@ public class ClientConnection {
 	public void run() throws Exception{
 
 		//Send code
-		client.sendMessage("12345");
+		client.sendKey();
 		
 		getUserInfo();
-		client.sendMessage(client.getUserID());
-		client.sendMessage(client.getPassword());
+		client.sendEncryptMesage(client.getUserID());
+		client.sendEncryptMesage(client.getPassword());
 		
-		retrieve = client.readMessage().trim();
+		retrieve = client.readEncryptMesage().trim();
 		System.out.println("Message from server: "+ retrieve);
 		if(retrieve.equals(userNotExist)){
 			System.out.println("You are not exist in the system");
@@ -51,11 +51,11 @@ public class ClientConnection {
 		while(true){
 			System.out.println("Please enter a filename, enter 'finished' to exit");
 			String filename = scan.nextLine();
-			client.sendMessage(filename);
+			client.sendEncryptMesage(filename);
 			if(filename.equals(Finish)){
 				break;
 			}
-			retrieve = client.readMessage();
+			retrieve = client.readEncryptMesage();
 			if(retrieve == null){
 				System.out.println("Please try again");
 				continue;

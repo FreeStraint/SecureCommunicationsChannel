@@ -17,19 +17,25 @@ public class Server {
 	}
 	
 	public boolean checkAuthenticate(String userID, String password){
-		return check.readShadowFile(userID, password);
+		System.out.println("ID: " + userID + " password: "+ password);
+		return check.readShadowFile(userID.trim(), password.trim());
 	}
 	
 	public boolean checkFile(String fname){
 		return check.checkFile(fname);
 	}
-	
-	public void sendMessage(String s){
-		transmit.sendMessage(s);
+		
+	public void readPlainMessage(){
+		//transmit.readKey();
+		transmit.setKey(transmit.readKey());
 	}
 	
-	public String readMessage(){
-		return transmit.readMessage().trim();
+	public void sendEncryptMesage(String s){
+		transmit.sendEncryptMessage(s);
+	}
+	
+	public String readEncryptMesage(){
+		return transmit.readEncryptMessage().trim();
 	}
 	
 	public void sendFile(String fname){

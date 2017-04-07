@@ -1,17 +1,36 @@
 import java.nio.ByteBuffer;
-import java.nio.LongBuffer;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import javax.crypto.KeyGenerator;
+
 public class Encrypt {
-		
+	
+	long[] key;
+	
+	public Encrypt(){
+		//key = new long[]{100,200,300,400};
+	}
+	
+	public void setKey(byte[] b){
+		key = convertBytesToLongs(b);
+	}
 	static{
 		System.loadLibrary("encrypt");
 	}
 	public byte[] encryptBtyeArray(byte[] b){
+		
+		long[] l = convertBytesToLongs(b);
+		l = encrypt(l, key);
+		b = convertLongsToBytes(l);
 		return b;
 	}
 
 	public byte[] decryptByteArray(byte[] b){
+		long[] l = convertBytesToLongs(b);
+		l = decrypt(l, key);
+		b = convertLongsToBytes(l);
 		return b;
 	}
 	
@@ -37,6 +56,9 @@ public class Encrypt {
 		else{
 			size = b.length/4 + 1;
 		}
+		if (size == 1){
+			size += 1;
+		}
 		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES *size);
 		buffer.put(b);
 		buffer.rewind();
@@ -45,6 +67,7 @@ public class Encrypt {
 		while(buffer.remaining() > 0){
 			result[buffer.position()/8] = buffer.getLong();
 		}
+		
 		return result;
 	}
 	//Reference from http://stackoverflow.com/questions/11665147/convert-a-longbuffer-intbuffer-shortbuffer-to-bytebuffer
@@ -64,10 +87,12 @@ public class Encrypt {
 		return bytes;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchAlgorithmException {
 		Encrypt e = new Encrypt();
-		
-		String s = "ABCDEDdaffasfdsaadfadsfadsfadsfadsdfdsafadsfasdfadsf";
+		long[] key;
+		Key k = KeyGenerator.getInstance("AES").generateKey();
+		key = e.convertBytesToLongs(k.getEncoded());
+		String s = "tom";
 		byte[] bb = s.getBytes();
 
 		System.out.println(Arrays.toString(bb));
@@ -77,13 +102,16 @@ public class Encrypt {
 		bb = e.convertLongsToBytes(ll);
 		System.out.println(Arrays.toString(bb));
 	
-		long[] key = new long[4];
 		long[] value = ll;
 		System.out.println(Arrays.toString(value));
 		System.out.println("original: " +value);
 		
 		long[] l = e.encryptMessage(value, key);
 		System.out.println("encrypt: "+ l);
+		
+		byte[] encry = e.convertLongsToBytes(l);
+		
+		l = e.convertBytesToLongs(encry);
 		
 		l = e.decryptMessage(l, key);
 		System.out.println("decrypt: ");
@@ -92,7 +120,7 @@ public class Encrypt {
 		System.out.println(Arrays.toString(bb));
 		String newst = new String(bb);
 		System.out.println(newst);
-		if(newst.equals(s.trim())){
+		if(newst.trim().equals(s.trim())){
 			System.out.println("Yes");
 		}
 	
