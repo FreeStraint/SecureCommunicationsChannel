@@ -25,8 +25,7 @@ public class Server {
 		return check.checkFile(fname);
 	}
 		
-	public void readPlainMessage(){
-		//transmit.readKey();
+	public void readKey(){
 		transmit.setKey(transmit.readKey());
 	}
 	

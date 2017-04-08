@@ -21,12 +21,7 @@ public class ClientHandler implements Runnable {
 	@Override
 	public void run(){
 		// Read from client
-		server.readPlainMessage();
-		//if(retrieve == null){
-		//	System.out.println("Error");
-		//}
-		//System.out.println("Code is "+ retrieve);
-		//server.setKey(retrieve);
+		server.readKey();
 		
 		retrieve = server.readEncryptMesage().trim();
 		String userID = retrieve;

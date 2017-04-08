@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include "Encrypt.h"
 
-void encrypt (long *v, long *k){
+void encrypt (int *v, int *k){
 /* TEA encryption algorithm */
-unsigned long y = v[0], z=v[1], sum = 0;
-unsigned long delta = 0x9e3779b9, n=32;
+unsigned int y = v[0], z=v[1], sum = 0;
+unsigned int delta = 0x9e3779b9, n=32;
 
 	while (n-- > 0){
 		sum += delta;
@@ -19,10 +19,10 @@ unsigned long delta = 0x9e3779b9, n=32;
 	v[1] = z;
 }
 
-void decrypt (long *v, long *k){
+void decrypt (int *v, int *k){
 /* TEA decryption routine */
-unsigned long n=32, sum, y=v[0], z=v[1];
-unsigned long delta=0x9e3779b9l;
+unsigned int n=32, sum, y=v[0], z=v[1];
+unsigned int delta=0x9e3779b9l;
 
 	sum = delta<<5;
 	while (n-- > 0){
@@ -34,35 +34,35 @@ unsigned long delta=0x9e3779b9l;
 	v[1] = z;
 }
 
-JNIEXPORT jlongArray JNICALL Java_Encrypt_encrypt
-  (JNIEnv *env, jobject thisObj, jlongArray value, jlongArray key){
+JNIEXPORT jintArray JNICALL Java_Encrypt_encrypt
+  (JNIEnv *env, jobject thisObj, jintArray value, jintArray key){
 
   	printf("encrypt\n");
-  	jlong *v = (*env)->GetLongArrayElements(env, value, 0);
-  	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
+  	jint *v = (*env)->GetIntArrayElements(env, value, 0);
+  	jint *k = (*env)->GetIntArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
 	
-  	encrypt((long *) v, (long *) k);
+  	encrypt((int *) v, (int *) k);
 
-	jlongArray res = (*env)->NewLongArray(env, vSize);
-	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
+	jintArray res = (*env)->NewIntArray(env, vSize);
+	(*env)->SetIntArrayRegion(env, res, 0, vSize, v);
 	return res;
   }
 
 
-JNIEXPORT jlongArray JNICALL Java_Encrypt_decrypt
-(JNIEnv *env, jobject thisObj, jlongArray value, jlongArray key){
+JNIEXPORT jintArray JNICALL Java_Encrypt_decrypt
+(JNIEnv *env, jobject thisObj, jintArray value, jintArray key){
 
-  	jlong *v = (*env)->GetLongArrayElements(env, value, 0);
-  	jlong *k = (*env)->GetLongArrayElements(env, key, 0);
+  	jint *v = (*env)->GetIntArrayElements(env, value, 0);
+  	jint *k = (*env)->GetIntArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
 
-	decrypt((long *) v, (long *) k);
+	decrypt((int *) v, (int *) k);
 
-	jlongArray res = (*env)->NewLongArray(env, vSize);
-	(*env)->SetLongArrayRegion(env, res, 0, vSize, v);
+	jintArray res = (*env)->NewIntArray(env, vSize);
+	(*env)->SetIntArrayRegion(env, res, 0, vSize, v);
 	return res;
 }
 
