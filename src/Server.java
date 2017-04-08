@@ -12,12 +12,8 @@ public class Server {
 		this.socket = socket;
 		check = new ServerCheck();
 	}
-	public Socket getSocket(){
-		return socket;
-	}
 	
 	public boolean checkAuthenticate(String userID, String password){
-		System.out.println("ID: " + userID + " password: "+ password);
 		return check.readShadowFile(userID.trim(), password.trim());
 	}
 	

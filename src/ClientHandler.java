@@ -16,8 +16,8 @@ public class ClientHandler implements Runnable {
 	public ClientHandler(Socket socket){
 		this.socket = socket;
 		this.server = new Server(socket);
-		//transmit = new Transmit(socket);
 	}
+	
 	@Override
 	public void run(){
 		// Read from client

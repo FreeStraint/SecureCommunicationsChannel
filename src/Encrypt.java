@@ -29,16 +29,6 @@ public class Encrypt {
 		return b;
 	}
 	
-	public int[] encryptMessage(int[] value, int[] key){
-		int[] l = encrypt(value, key);
-		return l;
-	}
-
-	public int[] decryptMessage(int[] value, int[] key){
-		int[] l = decrypt(value, key);
-		return l;
-	}
-	
 	private native int[] encrypt(int[] value, int[] key);
 	private native int[] decrypt(int[] value, int[] key);
 	

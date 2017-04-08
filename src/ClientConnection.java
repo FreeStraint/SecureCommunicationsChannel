@@ -12,9 +12,9 @@ public class ClientConnection {
 	final private int portNumber = 16000;
 	final private String address = "127.0.0.1";
 
-	Client client;
-	Scanner scan;
-	Socket socket;
+	private Client client;
+	private Scanner scan;
+	private Socket socket;
 	private String retrieve;
 	
 	public ClientConnection() throws Exception{

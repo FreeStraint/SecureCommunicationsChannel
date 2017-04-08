@@ -37,7 +37,6 @@ unsigned int delta=0x9e3779b9l;
 JNIEXPORT jintArray JNICALL Java_Encrypt_encrypt
   (JNIEnv *env, jobject thisObj, jintArray value, jintArray key){
 
-  	printf("encrypt\n");
   	jint *v = (*env)->GetIntArrayElements(env, value, 0);
   	jint *k = (*env)->GetIntArrayElements(env, key, 0);
 

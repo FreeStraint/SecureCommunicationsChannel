@@ -8,11 +8,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 
-/**
- * This class was used to transmit string message and file between client and server
- * @author James
- *
- */
 public class Transmit {
 	
 	DataOutputStream out;
@@ -107,6 +102,4 @@ public class Transmit {
 			fos.close();
 		} catch (IOException e) {}
 	}
-
-
 }
