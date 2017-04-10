@@ -41,9 +41,14 @@ JNIEXPORT jintArray JNICALL Java_Encrypt_encrypt
   	jint *k = (*env)->GetIntArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
-	
-  	encrypt((int *) v, (int *) k);
-
+  	int i;
+  	int *t = (int *) v;
+  	printf("%d\n", (int) vSize);
+  	while((jint *) t < v + vSize){
+	  	encrypt(t, (int *) k);
+  		t+=2;
+  	}
+  	
 	jintArray res = (*env)->NewIntArray(env, vSize);
 	(*env)->SetIntArrayRegion(env, res, 0, vSize, v);
 	return res;
@@ -57,8 +62,12 @@ JNIEXPORT jintArray JNICALL Java_Encrypt_decrypt
   	jint *k = (*env)->GetIntArrayElements(env, key, 0);
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
-
-	decrypt((int *) v, (int *) k);
+  	int *t = (int *) v;
+  	printf("%d\n", (int) vSize);
+  	while((jint *) t < v + vSize){
+	  	decrypt(t, (int *) k);
+  		t+=2;
+  	}
 
 	jintArray res = (*env)->NewIntArray(env, vSize);
 	(*env)->SetIntArrayRegion(env, res, 0, vSize, v);

@@ -1,5 +1,9 @@
 import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import javax.crypto.KeyGenerator;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 public class Encrypt {
 	
@@ -71,5 +75,27 @@ public class Encrypt {
 			}
 		}
 		return bytes;
+	}
+	
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+		//Testing
+		Encrypt e = new Encrypt();
+		String a = "a";
+		
+		byte[] key = KeyGenerator.getInstance("AES").generateKey().getEncoded();
+		e.setKey(key);
+		System.out.println("Original");
+		System.out.println(Arrays.toString(a.getBytes()));
+		System.out.println("Convert to ints");
+
+		int[] ai = e.convertBytesToInts(a.getBytes());
+		System.out.println(Arrays.toString(ai));
+		System.out.println("Encrypt");
+
+		byte[] bb = e.encryptBtyeArray(a.getBytes());
+		System.out.println(Arrays.toString(bb));
+		System.out.println("decrypt");
+		bb = e.decryptByteArray(bb);
+		System.out.println(Arrays.toString(bb));
 	}
 }
