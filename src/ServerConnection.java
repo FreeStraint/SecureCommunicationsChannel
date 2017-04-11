@@ -14,6 +14,7 @@ public class ServerConnection {
 	public ServerConnection() throws IOException{
 		serverSocket = new ServerSocket(portNumber);
 		pool = Executors.newFixedThreadPool(poolSize);
+		
 	}
 	
 	public void run(){
@@ -23,6 +24,7 @@ public class ServerConnection {
 				Socket socket = serverSocket.accept();
 				System.out.println("Socket accepted");
 				pool.execute(new ClientHandler(socket));
+				//new Thread(new ClientHandler(socket));
 			}
 		}catch (IOException ex){
 			pool.shutdown();
