@@ -43,7 +43,7 @@ JNIEXPORT jintArray JNICALL Java_Encrypt_encrypt
   	jsize vSize = (*env)->GetArrayLength(env, value);
   	int i;
   	int *t = (int *) v;
-  	printf("%d\n", (int) vSize);
+//  	printf("%d\n", (int) vSize);
   	while((jint *) t < v + vSize){
 	  	encrypt(t, (int *) k);
   		t+=2;
@@ -63,7 +63,7 @@ JNIEXPORT jintArray JNICALL Java_Encrypt_decrypt
 
   	jsize vSize = (*env)->GetArrayLength(env, value);
   	int *t = (int *) v;
-  	printf("%d\n", (int) vSize);
+//  	printf("%d\n", (int) vSize);
   	while((jint *) t < v + vSize){
 	  	decrypt(t, (int *) k);
   		t+=2;
