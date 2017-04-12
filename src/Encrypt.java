@@ -3,7 +3,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import javax.crypto.KeyGenerator;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 public class Encrypt {
 	

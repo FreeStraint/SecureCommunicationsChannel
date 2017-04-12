@@ -44,6 +44,7 @@ public class ServerCheck {
 		return false;
 	}
 	
+	//Reference http://www.quicklyjava.com/salt-in-java/
 	public String hash(String password){
 		String salt = "ECE422Project2SaltingString";
 		MessageDigest mg = null;
@@ -65,7 +66,7 @@ public class ServerCheck {
 		ServerCheck se = new ServerCheck();
 		String unenct = "abcde";
 		
-		boolean a = se.readShadowFile("tom", "abcde");
+		//boolean a = se.readShadowFile("tom", "abcde");
 		
 		String en = se.hash(unenct);
 		System.out.println("hash: "+ en);

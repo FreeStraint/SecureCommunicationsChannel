@@ -2,6 +2,7 @@ import java.net.Socket;
 
 public class Server {
 	
+	@SuppressWarnings("unused")
 	private Socket socket;
 	private ServerCheck check;
 	private Transmit transmit;
